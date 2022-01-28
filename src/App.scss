@@ -136,3 +136,35 @@ table {
   justify-content: center;
   align-items: center;
 }
+
+.table-dcomp {
+  justify-self: stretch;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  background: red;
+
+  .row-dcomp {
+    background: blue;
+    color: yellow;
+    padding: 3px;
+    margin: 7px;
+  }
+}
+
+.table-dcomp-calc {
+  justify-self: stretch;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  background: rgb(189, 158, 170);
+
+  .row-dcomp-calc {
+    background: rgb(54, 102, 74);
+    color: rgb(243, 48, 30);
+    padding: 3px;
+    margin: 7px;
+  }
+}

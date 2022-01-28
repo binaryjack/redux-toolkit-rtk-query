@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { todoApi } from '../feature/TodoApi';
 import { Todo } from '../model/todoModel';
 import './todo.scss';
 
@@ -65,70 +66,51 @@ const Items: React.FC<ItemsProps> = ({
 type TodoUiProps = {};
 
 const TodoUi: React.FC<TodoUiProps> = (): JSX.Element => {
-  const [data, setData] = useState<Todo[]>([]);
-  const [newTask, setNewTask] = useState<string>('');
-
-  useEffect(() => {
-    fakeData();
-  }, []);
-
   const getNewDueDate = () => {
     const date = new Date();
     const dueDate = new Date(date.setDate(date.getDate() + 1));
     return dueDate;
   };
-
-  const fakeData = () => {
-    const dataCollection: Todo[] = [];
-    for (let i = 0; i < 10; i++) {
-      dataCollection.push({
-        sortOrder: i,
-        id: i.toString(),
-        task: `Learn TypeScript${i}`,
-        done: false,
-        dueDate: getNewDueDate().toLocaleDateString(),
-      });
-    }
-    setData(dataCollection);
-  };
+  const [newTask, setNewTask] = useState<string>('');
+  const { data: todos, isLoading } = todoApi.useGetAllQuery();
+  const [addTodo] = todoApi.useAddTodoMutation();
+  const [updateTodo] = todoApi.useUpdateTodoMutation();
+  const [deleteTodo] = todoApi.useDeleteTodoMutation();
 
   const onAdd = () => {
-    if (!newTask) return;
-    const last = data[data.length - 1];
-    const nextId = last.sortOrder + 1;
-    const newCollecton = [
-      {
-        sortOrder: nextId,
-        id: nextId.toString(),
-        task: newTask,
-        dueDate: getNewDueDate().toLocaleDateString(),
-      } as Todo,
-      ...data,
-    ].sort((a, b) => a.sortOrder - b.sortOrder);
-    setData(newCollecton);
+    if (!newTask || !todos) return;
+    const last = todos[todos.length - 1];
+
+    const nextId = last && last.sortOrder ? last.sortOrder + 1 : 1;
+    const newTodo = {
+      sortOrder: nextId,
+      id: nextId.toString(),
+      task: newTask,
+      dueDate: getNewDueDate().toLocaleDateString(),
+    } as Todo;
+    addTodo(newTodo);
+
     setNewTask('');
   };
   const onRemove = (id: string) => {
+    if (!todos) return;
+
     console.log('remove: ', id);
 
-    const element = data.find((o) => o.id === id);
+    const element = todos.find((o) => o.id === id);
     if (!element) return;
-
-    const newCollecton = [...data.filter((o) => o.id !== id)].sort(
-      (a, b) => a.sortOrder - b.sortOrder,
-    );
-    console.log(`id: ${element.id} is ${element.done}`);
-    setData(newCollecton);
+    deleteTodo(element);
   };
   const onCheck = (id: string) => {
-    const element = data.find((o) => o.id === id);
+    if (!todos) return;
+
+    const element = todos.find((o) => o.id === id);
     if (!element) return;
-    element.done = !element.done;
-    const newCollecton = [element, ...data.filter((o) => o.id !== id)].sort(
-      (a, b) => a.sortOrder - b.sortOrder,
-    );
-    console.log(`id: ${element.id} is ${element.done}`);
-    setData(newCollecton);
+    const newTodo = { ...element };
+
+    newTodo.done = !newTodo.done;
+    console.log(newTodo);
+    updateTodo(newTodo);
   };
 
   return (
@@ -142,7 +124,10 @@ const TodoUi: React.FC<TodoUiProps> = (): JSX.Element => {
         <button onClick={onAdd}>Add</button>
       </div>
       <div className="tasks-container">
-        <Items todos={data} onRemove={onRemove} onChecked={onCheck} />
+        {isLoading ? 'loading...' : ''}
+        {todos && (
+          <Items todos={todos} onRemove={onRemove} onChecked={onCheck} />
+        )}
       </div>
     </div>
   );
