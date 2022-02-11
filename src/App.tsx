@@ -1,13 +1,19 @@
 import './App.css';
-import TodoUi from './todo/todo';
+import './table.scss';
+import TableComponent from './table/TableComponent';
+import tableDataMock from './table/TableMockData';
 
 const App = () => {
+
+
+
   return (
     <div className="App">
-      <TodoUi />
+
+      <TableComponent data={tableDataMock} />
 
     </div>
-  );
+  )
 }
 
 export default App;
