@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { todoApi } from '../feature/TodoApi';
 import { Todo } from '../model/todoModel';
 import './todo.scss';

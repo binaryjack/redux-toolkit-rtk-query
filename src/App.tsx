@@ -1,12 +1,9 @@
-import './App.css';
+import './App.scss';
 import './table.scss';
 import TableComponent from './table/TableComponent';
 import tableDataMock from './table/TableMockData';
 
 const App = () => {
-
-
-
   return (
     <div className="App">
 
@@ -14,6 +11,7 @@ const App = () => {
 
     </div>
   )
+}
 // }
 // import './App.scss';
 // import TodoUi from './todo/todo';
@@ -84,4 +82,4 @@ const App = () => {
 //   );
 // };
 
-// export default App;
+export default App;
