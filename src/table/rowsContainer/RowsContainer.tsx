@@ -1,19 +1,18 @@
-import { FC, useContext } from 'react'
+import { FC } from 'react'
+import { RowDataModel } from '../../model/tableModel'
 import RowContainer from '../rowContainer/RowContainer'
-import { TableContext } from '../tableContext'
 import "./RowsContainer.scss"
 
 
 export type RowsContainersProps = {
-
+    rows: RowDataModel[]
 }
 
-const RowsContainers: FC<RowsContainersProps> = () => {
+const RowsContainers: FC<RowsContainersProps> = ({ rows }) => {
 
-    const { table } = useContext(TableContext)
 
     return <div className='rows-container'>
-        {table.rows.map((row, rowIndex) =>
+        {rows.map((row, rowIndex) =>
             <RowContainer key={rowIndex} row={row} rowIndex={rowIndex} />
         )}
     </div>

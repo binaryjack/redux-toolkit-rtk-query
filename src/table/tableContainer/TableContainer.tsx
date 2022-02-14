@@ -1,18 +1,18 @@
-import { FC, useContext } from 'react'
+import { FC } from 'react'
+import { TableDataModel } from '../../model/tableModel'
 import RowsContainer from '../rowsContainer/RowsContainer'
-import { TableContext } from '../tableContext'
 import "./TableContainer.scss"
 
 export type TableContainerProps = {
-
+    data: TableDataModel
 }
 
-const TableContainer: FC<TableContainerProps> = () => {
+const TableContainer: FC<TableContainerProps> = ({ data }) => {
 
-    const { table } = useContext(TableContext)
+
 
     return <div className='table-container'>
-        <RowsContainer />
+        <RowsContainer rows={data.rows} />
     </div>
 }
 

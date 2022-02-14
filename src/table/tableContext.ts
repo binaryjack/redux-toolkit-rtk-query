@@ -1,8 +1,9 @@
 import { createContext } from 'react';
-import { TableDataModel } from './../model/tableModel';
 
 
 export const TableContext = createContext({
-    table: {} as TableDataModel
+    selectRow: (id: number) => { },
+    onDrop: (sourceId: EventTarget, targetId: number) => { },
+
 });
 
