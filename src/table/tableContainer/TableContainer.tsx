@@ -21,22 +21,24 @@ var compareNumberColumn = (
   a: RowDataModel,
   b: RowDataModel,
   columnNumber: number,
-): 1 | 0 | -1 => {
+  direction: string
+): number => {
   if (!a || !b) return 0;
 
   if (a.id === 0 || b.id === 0) return 0;
 
+
+  console.log(a.columns[columnNumber].label)
+  {
+
+  }
+
+
+
   const aValue = +a.columns[columnNumber].label!;
   const bValue = +b.columns[columnNumber].label!;
   if (!aValue || !bValue) return 0;
-
-  if (aValue < bValue) {
-    return -1;
-  }
-  if (aValue > bValue) {
-    return 1;
-  }
-  return 0;
+  return direction === 'asc' ? aValue - bValue : bValue - aValue;
 };
 
 const tracing = (table: TableDataModel) => {
@@ -60,11 +62,11 @@ const TableContainer: FC<TableContainerProps> = ({ data }) => {
     const newTable = {
       ...data,
       rows: [...data.rows].sort((a, b) =>
-        compareNumberColumn(a, b, columnNumber),
+        compareNumberColumn(a, b, columnNumber, direction),
       ),
     };
 
-    setInnerData((_store) => (_store = newTable));
+    setInnerData(newTable);
 
     console.log(tracing(newTable));
   };
@@ -88,7 +90,7 @@ const TableContainer: FC<TableContainerProps> = ({ data }) => {
       ].sort(compareIntegers),
     };
 
-    setInnerData((_store) => (_store = newTable));
+    setInnerData(newTable);
 
     const newSource = newTable.rows[draggedRowId - 1];
     const newTarget = newTable.rows[targetRowId - 1];
