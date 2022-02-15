@@ -7,7 +7,7 @@ export type TableContainerProps = {
   data: TableDataModel;
 };
 
-var compareIntegers = (a: RowDataModel, b: RowDataModel) => {
+const compareIntegers = (a: RowDataModel, b: RowDataModel) => {
   if (a.id < b.id) {
     return 1;
   }
@@ -17,7 +17,21 @@ var compareIntegers = (a: RowDataModel, b: RowDataModel) => {
   return 0;
 };
 
-var compareNumberColumn = (
+
+const isText = (value: any) => typeof value === 'string'
+const isNumber = (value: any) => typeof value === 'number' || isText(value) && /^[0-9\.\,]+$/.test(value)
+const isBoolean = (value: any) => typeof value === 'boolean'
+const isBigInt = (value: any) => typeof value === 'bigint'
+const isHour = (value: any) => isText(value) && /^([0-2]{1}[0-9]{1})\:([0-5]{1}[0-9]{1})\:?([0-5]{1}[0-9]{1})?$/.test(value)
+const isDate = (value: any) => isText(value) && /^([0-3]{1}[0-9]{3})\-?\\?\.?([0-1]{1}|00|01|02|03|04|05|06|07|08|09|10|11|12)\-?\\?\.?([0-3]{1}[0-9]{1})?$/.test(value)
+
+
+
+
+
+
+
+const compareNumberColumn = (
   a: RowDataModel,
   b: RowDataModel,
   columnNumber: number,
@@ -25,20 +39,32 @@ var compareNumberColumn = (
 ): number => {
   if (!a || !b) return 0;
 
-  if (a.id === 0 || b.id === 0) return 0;
+  if (isNumber(a.columns[columnNumber].label) && isNumber(b.columns[columnNumber].label)) {
+    const aValue = +a.columns[columnNumber].label!;
+    const bValue = +b.columns[columnNumber].label!;
+    if (!aValue || !bValue) return 0;
+    return direction === 'asc' ? aValue - bValue : bValue - aValue;
+  }
+  if (isText(a.columns[columnNumber].label) && isText(b.columns[columnNumber].label)) {
+    let aValue = a.columns[columnNumber].label!;
+    let bValue = b.columns[columnNumber].label!;
+    aValue = (!aValue ? "a" : aValue).toLowerCase();
+    bValue = (!bValue ? "a" : bValue).toLowerCase();
 
-
-  console.log(a.columns[columnNumber].label)
-  {
-
+    return direction === 'asc' && aValue < bValue ? -1 : aValue < bValue ? 1 : 0;
+  }
+  if (isBoolean(a.columns[columnNumber].label) && isBoolean(b.columns[columnNumber].label)) {
+    let aValue = a.columns[columnNumber].label! === 'true' ? true : false;
+    let bValue = b.columns[columnNumber].label! === 'true' ? true : false;
+    return direction === 'asc' && aValue < bValue ? -1 : 1;
   }
 
-
-
-  const aValue = +a.columns[columnNumber].label!;
-  const bValue = +b.columns[columnNumber].label!;
-  if (!aValue || !bValue) return 0;
-  return direction === 'asc' ? aValue - bValue : bValue - aValue;
+  if (isDate(a.columns[columnNumber].label) && isDate(b.columns[columnNumber].label)) {
+    let aValue = new Date(a.columns[columnNumber].label!)
+    let bValue = new Date(b.columns[columnNumber].label!)
+    return direction === 'asc' && aValue < bValue ? -1 : 1;
+  }
+  return 0;
 };
 
 const tracing = (table: TableDataModel) => {
@@ -55,6 +81,17 @@ const TableContainer: FC<TableContainerProps> = ({ data }) => {
   const [innerData, setInnerData] = useState<TableDataModel | undefined>(
     undefined,
   );
+
+
+  console.log("isText test", isText("test"))
+  console.log("isNumber 1234", isNumber(123))
+  console.log("isHour 02:05", isHour('02:05'))
+  console.log("isHour 23:59:59", isHour('23:59:59'))
+  console.log("isHour 23:59:79", isHour('23:59:75'))
+  console.log("isDate 2021-12-24", isDate('2021-12-24'))
+  console.log("isDate 2021-12-24", isDate('2021-10-02'))
+
+
 
   const sortColumn = (columnNumber: number, direction: string): void => {
     console.log('sort Column', columnNumber, direction);
@@ -91,6 +128,9 @@ const TableContainer: FC<TableContainerProps> = ({ data }) => {
     };
 
     setInnerData(newTable);
+
+
+
 
     const newSource = newTable.rows[draggedRowId - 1];
     const newTarget = newTable.rows[targetRowId - 1];
