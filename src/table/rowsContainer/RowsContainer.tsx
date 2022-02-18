@@ -1,9 +1,10 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { RowDataModel } from '../../model/tableModel';
 import RowContainer from '../rowContainer/RowContainer';
 import './RowsContainer.scss';
 
 export type RowsContainersProps = {
+  header: RowDataModel;
   rows: RowDataModel[];
   sortRows: () => void;
   sortAction: (draggedRowId: number, targetRowId: number) => void;
@@ -11,6 +12,7 @@ export type RowsContainersProps = {
 };
 
 const RowsContainers: FC<RowsContainersProps> = ({
+  header,
   rows,
   sortRows,
   sortAction,
@@ -19,15 +21,6 @@ const RowsContainers: FC<RowsContainersProps> = ({
   const [draggedRow, setDraggedRow] = useState<RowDataModel | undefined>(
     undefined,
   );
-
-  const [header, setHeader] = useState<RowDataModel | undefined>(undefined);
-
-  const [body, setBody] = useState<RowDataModel[] | undefined>(undefined);
-
-  useEffect(() => {
-    setHeader(rows.find((o) => o.label === 'Header'));
-    setBody(rows.filter((o) => o.label !== 'Header'));
-  }, [rows]);
 
   const dragStartHandler = (
     event: React.DragEvent<HTMLDivElement>,
@@ -74,12 +67,12 @@ const RowsContainers: FC<RowsContainersProps> = ({
 
   return (
     <div className="rows-container">
-      {header && body && (
+      {header && rows && (
         <>
           <div className="rows-header">
             {<RowContainer row={header} rowIndex={0} sortColumn={sortColumn} />}
           </div>
-          {body.map((row, rowIndex) => (
+          {rows.map((row, rowIndex) => (
             <RowContainer
               key={rowIndex}
               row={row}
