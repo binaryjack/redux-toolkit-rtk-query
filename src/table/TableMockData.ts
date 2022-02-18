@@ -38,7 +38,52 @@ const columns3: ColumnDataModel[] = [
     { order: 5, label: "078/5252633" }
 ]
 
+const columns4: ColumnDataModel[] = [
+    { order: 0, label: "4" },
+    { order: 1, label: "Fischer" },
+    { order: 2, label: "Michaël" },
+    { order: 3, label: "20.09.1986" },
+    { order: 4, label: "Juste-Olivier 12" },
+    { order: 5, label: "079/6359856" }
+]
 
+const columns5: ColumnDataModel[] = [
+    { order: 0, label: "5" },
+    { order: 1, label: "Fontal" },
+    { order: 2, label: "Monica" },
+    { order: 3, label: "14.04.1979" },
+    { order: 4, label: "Eglantine 96" },
+    { order: 5, label: "077/1246565" }
+]
+
+const columns6: ColumnDataModel[] = [
+    { order: 0, label: "6" },
+    { order: 1, label: "Zigler" },
+    { order: 2, label: "Alain" },
+    { order: 3, label: "04.12.1965" },
+    { order: 4, label: "Lavaux 12, av de" },
+    { order: 5, label: "079/8546925" }
+]
+
+
+const columns7: ColumnDataModel[] = [
+    { order: 0, label: "7" },
+    { order: 1, label: "Zappella" },
+    { order: 2, label: "Rocane" },
+    { order: 3, label: "14.10.1975" },
+    { order: 4, label: "Chamonix-la-croix 56" },
+    { order: 5, label: "078/3657154" }
+]
+
+
+const columns8: ColumnDataModel[] = [
+    { order: 0, label: "8" },
+    { order: 1, label: "Gester" },
+    { order: 2, label: "Oliver" },
+    { order: 3, label: "01.05.1959" },
+    { order: 4, label: "Accacias 56" },
+    { order: 5, label: "079/652.26.54" }
+]
 
 const tableDataMock = TableAdapter("Customers Mock")
 
@@ -48,11 +93,21 @@ if (tableDataMock && tableDataMock.addRow) {
     const Row1 = tableDataMock.addRow("Row1")
     const Row2 = tableDataMock.addRow("Row2")
     const Row3 = tableDataMock.addRow("Row3")
+    const Row4 = tableDataMock.addRow("Row4")
+    const Row5 = tableDataMock.addRow("Row5")
+    const Row6 = tableDataMock.addRow("Row6")
+    const Row7 = tableDataMock.addRow("Row7")
+    const Row8 = tableDataMock.addRow("Row8")
 
     headerRow.addColumns!(columnsDefinition)
     Row1.addColumns!(columns1)
     Row2.addColumns!(columns2)
     Row3.addColumns!(columns3)
+    Row4.addColumns!(columns4)
+    Row5.addColumns!(columns5)
+    Row6.addColumns!(columns6)
+    Row7.addColumns!(columns7)
+    Row8.addColumns!(columns8)
 
 
 }
