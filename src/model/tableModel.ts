@@ -8,13 +8,19 @@ export interface TableAbstract {
 
 export interface TableDataModel extends TableAbstract {
     rows: RowDataModel[]
-    addRow?: (label?: string) => RowDataModel
+    newRow?: (label?: string) => RowDataModel
+    addRow?: (row?: RowDataModel) => void,
+
+
+
 }
 
 
-export interface RowDataModel {
+export type RowDataModel = {
     id: number
+    dragDropSortOrder?: number
     label?: string
+    isHeader: boolean
     columns: ColumnDataModel[]
     addColumn?: (label?: string, sortable?: boolean, active?: boolean) => ColumnDataModel
     addColumnModel?: (model?: ColumnDataModel) => ColumnDataModel | undefined
@@ -26,7 +32,9 @@ export interface ColumnDataModel {
     order: number
     label?: string
     sortable?: boolean
-    active?: boolean
+    active?: boolean,
+    editable?: boolean,
+    dataType?: DataTypes
     cell?: CellDataModel
     assCell?: (cell?: CellDataModel) => CellDataModel
 }
@@ -39,6 +47,15 @@ export interface CellDataModel {
 }
 
 
+export enum DataTypes {
+    Int,
+    BigInt,
+    Float,
+    Text,
+    TextArea,
+    Date,
+    Hour,
+    GUID,
+    PhoneNumber,
 
-
-
+}

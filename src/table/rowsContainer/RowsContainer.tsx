@@ -6,7 +6,6 @@ import './RowsContainer.scss';
 export type RowsContainersProps = {
   header: RowDataModel;
   rows: RowDataModel[];
-  sortRows: () => void;
   sortAction: (draggedRowId: number, targetRowId: number) => void;
   sortColumn: (columnNumber: number, direction: string) => void;
 };
@@ -14,7 +13,6 @@ export type RowsContainersProps = {
 const RowsContainers: FC<RowsContainersProps> = ({
   header,
   rows,
-  sortRows,
   sortAction,
   sortColumn,
 }) => {

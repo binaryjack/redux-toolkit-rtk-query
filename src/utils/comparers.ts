@@ -20,7 +20,7 @@ https://www.delftstack.com/fr/howto/javascript/javascript-sort-array-of-objects-
 
 const collator = new Intl.Collator('fr');
 
-export const compareNumberColumn = (
+export const sortColumnAction = (
     a: RowDataModel,
     b: RowDataModel,
     columnNumber: number,
@@ -66,14 +66,14 @@ export const sortingNumberMethod = (
     a: number,
     b: number,
     direction: string,
-): number => direction === 'asc' && a < b ? -1 : a > b ? 1 : 0;
+): number => direction === 'asc' ? ascNumber(a, b) : descNumber(a, b)
 
-export const compareIntegers = (a: RowDataModel, b: RowDataModel) => {
-    if (a.id < b.id) {
-        return 1;
-    }
-    if (a.id > b.id) {
-        return -1;
-    }
-    return 0;
-};
+
+const ascNumber = (a: number, b: number) => a - b
+const descNumber = (a: number, b: number) => b - a
+
+
+export const comparers = {
+    ascNumber,
+    descNumber
+}
