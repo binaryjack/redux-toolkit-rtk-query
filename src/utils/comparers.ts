@@ -28,28 +28,28 @@ export const sortColumnAction = (
 ): number => {
     if (!a || !b) return 0;
 
-    if (validators.isNumber(a.columns[columnNumber].label) && validators.isNumber(b.columns[columnNumber].label)) {
-        const aValue = +a.columns[columnNumber].label!;
-        const bValue = +b.columns[columnNumber].label!;
+    if (validators.isNumber(a.columns[columnNumber].value) && validators.isNumber(b.columns[columnNumber].value)) {
+        const aValue = +a.columns[columnNumber].value!;
+        const bValue = +b.columns[columnNumber].value!;
         if (!aValue || !bValue) return 0;
         return sortingNumberMethod(aValue, bValue, direction);
     }
-    if (validators.isText(a.columns[columnNumber].label) && validators.isText(b.columns[columnNumber].label)) {
-        let aValue = a.columns[columnNumber].label!;
-        let bValue = b.columns[columnNumber].label!;
+    if (validators.isText(a.columns[columnNumber].value) && validators.isText(b.columns[columnNumber].value)) {
+        let aValue = a.columns[columnNumber].value!;
+        let bValue = b.columns[columnNumber].value!;
         aValue = (!aValue ? "a" : aValue).toLowerCase();
         bValue = (!bValue ? "a" : bValue).toLowerCase();
 
         return sortingStringMethod(aValue, bValue, direction);
     }
-    if (validators.isBoolean(a.columns[columnNumber].label) && validators.isBoolean(b.columns[columnNumber].label)) {
-        let aValue = a.columns[columnNumber].label! === 'true' ? true : false;
-        let bValue = b.columns[columnNumber].label! === 'true' ? true : false;
+    if (validators.isBoolean(a.columns[columnNumber].value) && validators.isBoolean(b.columns[columnNumber].value)) {
+        let aValue = a.columns[columnNumber].value! === 'true' ? true : false;
+        let bValue = b.columns[columnNumber].value! === 'true' ? true : false;
         return direction === 'asc' && aValue > bValue ? -1 : bValue > aValue ? 1 : 0;
     }
-    if (validators.isDate(a.columns[columnNumber].label) && validators.isDate(b.columns[columnNumber].label)) {
-        let aValue = new Date(a.columns[columnNumber].label!).toISOString()
-        let bValue = new Date(b.columns[columnNumber].label!).toISOString()
+    if (validators.isDate(a.columns[columnNumber].value) && validators.isDate(b.columns[columnNumber].value)) {
+        let aValue = new Date(a.columns[columnNumber].value!).toISOString()
+        let bValue = new Date(b.columns[columnNumber].value!).toISOString()
         return sortingStringMethod(aValue, bValue, direction);
     }
     return 0;

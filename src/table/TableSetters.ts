@@ -28,8 +28,6 @@ const dragDropSortAction =
         };
     }
 
-
-
 const sortColumn = (table: TableDataModel, header: RowDataModel, mainDataset: RowDataModel[], columnNumber: number, direction: string): TableDataModel | undefined => {
     console.log('sort Column', columnNumber, direction);
     if (!mainDataset || !header) return

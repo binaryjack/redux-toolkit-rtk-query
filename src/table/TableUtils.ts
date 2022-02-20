@@ -1,7 +1,7 @@
 import {
   CellDataModel,
-  ColumnDataModel,
-  RowDataModel,
+  ColumnDataModel, RowDataModel,
+  RowType,
   TableDataModel
 } from '../model/tableModel';
 
@@ -21,7 +21,7 @@ export const TableAdapter = (name: string): TableDataModel => {
 };
 
 export const ColumnDefinition = (label: string): ColumnDataModel => {
-  return { order: 0, label: label, active: true };
+  return { order: 0, value: label, active: true };
 };
 
 export const NewRow =
@@ -70,7 +70,7 @@ export const AddColumn =
       const nextId: number = row.columns ? row.columns.length + 1 : 0;
       const newColumn = {
         order: nextId,
-        label,
+        value: label,
         sortable,
         active,
       } as ColumnDataModel;
@@ -95,7 +95,7 @@ export const AddCell =
   (column: ColumnDataModel) =>
     (
       value: string | number | undefined | null,
-      format: string,
+      format: RegExp,
       active?: boolean,
     ): CellDataModel => {
       const newCell = { value, format, active } as CellDataModel;
@@ -111,13 +111,9 @@ export const CreateRow = (label: string, columns?: ColumnDataModel[]): RowDataMo
   return newRow
 }
 
-
-
-
 export const AddRow =
   (table: TableDataModel) =>
     (row?: RowDataModel): void => {
-
       if (!row) return;
       row.id =
         table.rows && table.rows.length === 0
@@ -128,7 +124,9 @@ export const AddRow =
       table.rows.push(row);
     };
 
+export const SortColumns = (columns: ColumnDataModel[]) => {
+  for (let i = 0; i < columns.length; i++) {
+    columns[i].order = i
 
-
-
-
+  }
+}

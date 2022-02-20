@@ -4,10 +4,10 @@ import { TableDataModel } from './../model/tableModel';
 
 const createTestMock = (): TableDataModel => {
 
-    const c1: ColumnDataModel[] = [{ order: 0, label: "1" }]
-    const c2: ColumnDataModel[] = [{ order: 0, label: "2" }]
-    const c3: ColumnDataModel[] = [{ order: 0, label: "3" }]
-    const c4: ColumnDataModel[] = [{ order: 0, label: "4" }]
+    const c1: ColumnDataModel[] = [{ order: 0, value: "1" }]
+    const c2: ColumnDataModel[] = [{ order: 0, value: "2" }]
+    const c3: ColumnDataModel[] = [{ order: 0, value: "3" }]
+    const c4: ColumnDataModel[] = [{ order: 0, value: "4" }]
 
     const tableDataMock = TableAdapter("Numbers")
 

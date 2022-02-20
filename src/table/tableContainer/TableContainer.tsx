@@ -24,6 +24,16 @@ const TableContainer: FC<TableContainerProps> = ({ data }) => {
   const sortAction = (draggedRowId: number, targetRowId: number): void =>
     setInnerData(rowDragDropSort(draggedRowId, targetRowId));
 
+
+  const deleteAction = (id: number) => {
+    console.log("delete", id)
+  }
+
+  const editAction = (id: number) => {
+    console.log("edit", id)
+  }
+
+
   const setRows = (): void => data && setInnerData(tableSetters.initialSortRows(data, data.rows));
 
   useEffect(() => {
@@ -46,9 +56,9 @@ const TableContainer: FC<TableContainerProps> = ({ data }) => {
             rows={mainDataset}
             sortAction={sortAction}
             sortColumn={sortColumn}
+            editAction={editAction}
+            deleteAction={deleteAction}
           />
-
-
         </>
       ) : (
         <div>No data</div>

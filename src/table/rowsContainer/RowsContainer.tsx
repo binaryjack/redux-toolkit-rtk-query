@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { RowDataModel } from '../../model/tableModel';
+import RowCommands from '../rowCommands/RowCommands';
 import RowContainer from '../rowContainer/RowContainer';
 import './RowsContainer.scss';
 
@@ -8,6 +9,8 @@ export type RowsContainersProps = {
   rows: RowDataModel[];
   sortAction: (draggedRowId: number, targetRowId: number) => void;
   sortColumn: (columnNumber: number, direction: string) => void;
+  editAction: (id: number) => void;
+  deleteAction: (id: number) => void;
 };
 
 const RowsContainers: FC<RowsContainersProps> = ({
@@ -15,6 +18,8 @@ const RowsContainers: FC<RowsContainersProps> = ({
   rows,
   sortAction,
   sortColumn,
+  editAction,
+  deleteAction
 }) => {
   const [draggedRow, setDraggedRow] = useState<RowDataModel | undefined>(
     undefined,
@@ -70,6 +75,7 @@ const RowsContainers: FC<RowsContainersProps> = ({
           <div className="rows-header">
             {<RowContainer row={header} rowIndex={0} sortColumn={sortColumn} />}
           </div>
+
           {rows.map((row, rowIndex) => (
             <RowContainer
               key={rowIndex}
@@ -78,9 +84,14 @@ const RowsContainers: FC<RowsContainersProps> = ({
               dragStartHandler={dragStartHandler}
               dropHandler={dropHandler}
               allowDrop={allowDrop}
+              editAction={editAction}
+              deleteAction={deleteAction}
               draggable
             />
           ))}
+          <div className="rows-commands">
+            <RowCommands />
+          </div>
         </>
       )}
     </div>

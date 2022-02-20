@@ -21,10 +21,10 @@ const Column: FC<ColumnsProps> = ({ column, sortColumn }) => {
   const renderSortingButtons = () =>
     sortColumn && (
       <div>
-        <button id={`btn-sort-up-${column.label}`} onClick={sortUpHandler}>
+        <button id={`btn-sort-up-${column.value}`} onClick={sortUpHandler}>
           asc
         </button>
-        <button id={`btn-sort-down-${column.label}`} onClick={sortDownHandler}>
+        <button id={`btn-sort-down-${column.value}`} onClick={sortDownHandler}>
           desc
         </button>
       </div>
@@ -32,7 +32,7 @@ const Column: FC<ColumnsProps> = ({ column, sortColumn }) => {
 
   return (
     <div className="column-container">
-      {column.label} {renderSortingButtons()}
+      {column.value} {renderSortingButtons()}
     </div>
   );
 };

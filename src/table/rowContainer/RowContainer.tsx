@@ -1,14 +1,10 @@
 import {
-  DetailedHTMLProps,
-  DragEventHandler,
-  FC,
-  HTMLAttributes,
-  useContext,
+  FC, useEffect, useState
 } from 'react';
 import { RowDataModel } from '../../model/tableModel';
+import ColumnCommands from '../columnCommands/ColumnCommands';
 import Columns from '../columns/Columns';
 import RowHeader from '../rowHeader/RowHeader';
-import { TableContext } from '../tableContext';
 import './RowContainer.scss';
 
 export type RowContainerProps = {
@@ -27,6 +23,8 @@ export type RowContainerProps = {
     event: React.DragEvent<HTMLDivElement>,
     data: RowDataModel,
   ) => boolean;
+  editAction?: (id: number) => void;
+  deleteAction?: (id: number) => void;
   draggable?: boolean;
 };
 
@@ -37,9 +35,37 @@ const RowContainer: FC<RowContainerProps> = ({
   dropHandler,
   dragStartHandler,
   allowDrop,
+  editAction,
+  deleteAction,
   draggable,
 }) => {
   // const { onDrop } = useContext(TableContext)
+
+  const [businessId, setBusinessId] = useState<number>();
+
+  useEffect(() => {
+    if (!row.columns[0] || !row.columns[0].value) {
+      console.error("unable to find row ID")
+      return
+    }
+    setBusinessId(Number.parseInt(row.columns[0].value))
+  }, [row])
+
+  const editHandler = () => {
+    if (!businessId || !editAction) {
+      console.error("unable to edit row ID")
+      return
+    }
+    editAction(businessId)
+  }
+  const deleteHandler = () => {
+    if (!businessId || !deleteAction) {
+      console.error("unable to delete row ID")
+      return
+    }
+    deleteAction(businessId)
+  }
+
 
   return (
     <div
@@ -53,6 +79,12 @@ const RowContainer: FC<RowContainerProps> = ({
     >
       <RowHeader row={row} />
       <Columns rowIndex={rowIndex} row={row} sortColumn={sortColumn} />
+      <div className="column-command">
+        {!row.isHeader && editAction && deleteAction ?
+          <ColumnCommands editAction={() => editHandler()} deleteAction={() => deleteHandler()} />
+          : <div >Commands</div>
+        }
+      </div>
     </div>
   );
 };

@@ -30,19 +30,19 @@ export type RowDataModel = {
 
 export interface ColumnDataModel {
     order: number
-    label?: string
+    value?: string
     sortable?: boolean
     active?: boolean,
     editable?: boolean,
     dataType?: DataTypes
     cell?: CellDataModel
-    assCell?: (cell?: CellDataModel) => CellDataModel
+    addCell?: (cell?: CellDataModel) => CellDataModel
 }
 
 
 export interface CellDataModel {
     value: string | number | undefined | null
-    format: string
+    format: RegExp
     active?: boolean
 }
 
@@ -57,5 +57,11 @@ export enum DataTypes {
     Hour,
     GUID,
     PhoneNumber,
+    Header
+}
 
+
+export enum RowType {
+    Header = 'Header',
+    Data = 'Data'
 }

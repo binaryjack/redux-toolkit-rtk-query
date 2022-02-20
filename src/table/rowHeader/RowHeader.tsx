@@ -7,7 +7,7 @@ export type RowHeaderProps = {
 };
 
 const RowHeader: FC<RowHeaderProps> = ({ row }) => {
-  const selectionHandler = () => {};
+  const selectionHandler = () => { };
 
   return (
     <div className="row-header">
