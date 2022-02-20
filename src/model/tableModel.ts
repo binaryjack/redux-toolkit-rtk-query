@@ -10,9 +10,6 @@ export interface TableDataModel extends TableAbstract {
     rows: RowDataModel[]
     newRow?: (label?: string) => RowDataModel
     addRow?: (row?: RowDataModel) => void,
-
-
-
 }
 
 
@@ -32,8 +29,8 @@ export interface ColumnDataModel {
     order: number
     value?: string
     sortable?: boolean
-    active?: boolean,
-    editable?: boolean,
+    active?: boolean
+    editable?: boolean
     dataType?: DataTypes
     cell?: CellDataModel
     addCell?: (cell?: CellDataModel) => CellDataModel
@@ -43,7 +40,14 @@ export interface ColumnDataModel {
 export interface CellDataModel {
     value: string | number | undefined | null
     format: RegExp
+    errors: ValidationError[]
     active?: boolean
+}
+
+
+export interface ValidationError {
+    code: string
+    text: string
 }
 
 

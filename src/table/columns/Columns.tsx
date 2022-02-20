@@ -7,9 +7,11 @@ export type ColumnsProps = {
   rowIndex: number;
   row: RowDataModel;
   sortColumn?: (columnNumber: number, direction: string) => void;
+  rowEdit: boolean
+  isInEditMode: boolean
 };
 
-const Columns: FC<ColumnsProps> = ({ row, rowIndex, sortColumn }) => {
+const Columns: FC<ColumnsProps> = ({ row, rowIndex, sortColumn, rowEdit, isInEditMode }) => {
   return (
     <div className="row-columns">
       {row.columns.map((column, columnIndex) => (
@@ -17,6 +19,8 @@ const Columns: FC<ColumnsProps> = ({ row, rowIndex, sortColumn }) => {
           key={`${rowIndex}${columnIndex}`}
           column={column}
           sortColumn={sortColumn}
+          rowEdit={rowEdit}
+          isInEditMode={isInEditMode}
         />
       ))}
     </div>

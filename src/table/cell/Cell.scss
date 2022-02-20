@@ -1,0 +1,32 @@
+.column-container {
+  width: 90px;
+  min-width: 50px;
+  border-left: solid black 1px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+
+  .cell-value-edit {
+    display: flex;
+    background: rgb(161, 153, 153);
+    border: none;
+    width: 90px;
+    height: 20px;
+
+    .cell-validation-errors {
+      display: flex;
+      padding: 5px;
+      ul {
+        li {
+          background: rgb(141, 124, 124);
+        }
+      }
+    }
+  }
+
+  .cell-value {
+    display: flex;
+  }
+}

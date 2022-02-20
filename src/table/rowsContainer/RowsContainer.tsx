@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { RowDataModel } from '../../model/tableModel';
+import { RowDataModel, RowType } from '../../model/tableModel';
 import RowCommands from '../rowCommands/RowCommands';
 import RowContainer from '../rowContainer/RowContainer';
 import './RowsContainer.scss';
@@ -9,8 +9,11 @@ export type RowsContainersProps = {
   rows: RowDataModel[];
   sortAction: (draggedRowId: number, targetRowId: number) => void;
   sortColumn: (columnNumber: number, direction: string) => void;
-  editAction: (id: number) => void;
+  editAction: (id: number, edit: boolean) => void;
   deleteAction: (id: number) => void;
+
+  // comming from root table container  in order to set a generic state
+  isInEditMode: boolean
 };
 
 const RowsContainers: FC<RowsContainersProps> = ({
@@ -19,7 +22,8 @@ const RowsContainers: FC<RowsContainersProps> = ({
   sortAction,
   sortColumn,
   editAction,
-  deleteAction
+  deleteAction,
+  isInEditMode
 }) => {
   const [draggedRow, setDraggedRow] = useState<RowDataModel | undefined>(
     undefined,
@@ -30,9 +34,6 @@ const RowsContainers: FC<RowsContainersProps> = ({
     data: RowDataModel,
   ): void => {
     event.dataTransfer.setData('draggtedrow', JSON.stringify(data));
-
-    //console.log('dragStartHandler  event', event);
-
     setDraggedRow(data);
   };
 
@@ -43,8 +44,6 @@ const RowsContainers: FC<RowsContainersProps> = ({
     const storedData = event.dataTransfer.getData('draggtedrow');
 
     const source = JSON.parse(storedData) as RowDataModel;
-
-    //console.log('dropHandler  event  target  data1', event, target, source);
 
     sortAction(source.id, target.id);
 
@@ -57,10 +56,11 @@ const RowsContainers: FC<RowsContainersProps> = ({
   const allowDrop = (
     event: React.DragEvent<HTMLDivElement>,
     data: RowDataModel,
+    isInEditMode: boolean,
   ): boolean => {
-    // console.log('allowDrop', draggedRow);
+
     if (draggedRow) {
-      if (data.label === 'Header' || draggedRow.id === data.id) {
+      if (data.label === RowType.Header || draggedRow.id === data.id || isInEditMode) {
         return false;
       }
     }
@@ -73,7 +73,7 @@ const RowsContainers: FC<RowsContainersProps> = ({
       {header && rows && (
         <>
           <div className="rows-header">
-            {<RowContainer row={header} rowIndex={0} sortColumn={sortColumn} />}
+            {<RowContainer row={header} rowIndex={0} sortColumn={sortColumn} isInEditMode={isInEditMode} />}
           </div>
 
           {rows.map((row, rowIndex) => (
@@ -87,6 +87,7 @@ const RowsContainers: FC<RowsContainersProps> = ({
               editAction={editAction}
               deleteAction={deleteAction}
               draggable
+              isInEditMode
             />
           ))}
           <div className="rows-commands">

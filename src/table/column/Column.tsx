@@ -1,13 +1,17 @@
 import { FC } from 'react';
 import { ColumnDataModel } from '../../model/tableModel';
+import Cell from '../cell/Cell';
 import './Column.scss';
 
-export type ColumnsProps = {
+export type ColumnProps = {
   column: ColumnDataModel;
   sortColumn?: (columnNumber: number, direction: string) => void;
+  rowEdit: boolean
+  isInEditMode: boolean;
 };
 
-const Column: FC<ColumnsProps> = ({ column, sortColumn }) => {
+const Column: FC<ColumnProps> = ({ column, sortColumn, rowEdit, isInEditMode }) => {
+  console.log("columns", isInEditMode)
   const sortUpHandler = () => {
     if (!sortColumn) return;
     sortColumn(column.order, 'asc');
@@ -21,10 +25,10 @@ const Column: FC<ColumnsProps> = ({ column, sortColumn }) => {
   const renderSortingButtons = () =>
     sortColumn && (
       <div>
-        <button id={`btn-sort-up-${column.value}`} onClick={sortUpHandler}>
+        <button id={`btn-sort-up-${column.value}`} onClick={sortUpHandler} disabled={isInEditMode}>
           asc
         </button>
-        <button id={`btn-sort-down-${column.value}`} onClick={sortDownHandler}>
+        <button id={`btn-sort-down-${column.value}`} onClick={sortDownHandler} disabled={isInEditMode}>
           desc
         </button>
       </div>
@@ -32,7 +36,8 @@ const Column: FC<ColumnsProps> = ({ column, sortColumn }) => {
 
   return (
     <div className="column-container">
-      {column.value} {renderSortingButtons()}
+      <Cell column={column} edit={rowEdit} />
+      {renderSortingButtons()}
     </div>
   );
 };

@@ -19,9 +19,6 @@ const TableComponent: FC<TableDataProps> = ({ data }) => {
         console.log(`drag drop: ${event}  => ${targetId}`)
     }
 
-
-
-
     return <div className='table-component'>
         <span className='table-id'>{id}</span>
         <span className='table-unique-key'>{uniqueKey}</span>

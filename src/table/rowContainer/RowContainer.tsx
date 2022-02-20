@@ -22,10 +22,13 @@ export type RowContainerProps = {
   allowDrop?: (
     event: React.DragEvent<HTMLDivElement>,
     data: RowDataModel,
+    isInEditMode: boolean,
   ) => boolean;
-  editAction?: (id: number) => void;
+  editAction?: (id: number, edit: boolean) => void;
   deleteAction?: (id: number) => void;
   draggable?: boolean;
+  // comming from root table container  in order to set a generic state
+  isInEditMode: boolean
 };
 
 const RowContainer: FC<RowContainerProps> = ({
@@ -38,10 +41,13 @@ const RowContainer: FC<RowContainerProps> = ({
   editAction,
   deleteAction,
   draggable,
+  isInEditMode
 }) => {
   // const { onDrop } = useContext(TableContext)
 
   const [businessId, setBusinessId] = useState<number>();
+  const [editMode, setEditMode] = useState<boolean>(false)
+
 
   useEffect(() => {
     if (!row.columns[0] || !row.columns[0].value) {
@@ -56,7 +62,8 @@ const RowContainer: FC<RowContainerProps> = ({
       console.error("unable to edit row ID")
       return
     }
-    editAction(businessId)
+    setEditMode(!editMode)
+    editAction(businessId, !editMode)
   }
   const deleteHandler = () => {
     if (!businessId || !deleteAction) {
@@ -66,19 +73,37 @@ const RowContainer: FC<RowContainerProps> = ({
     deleteAction(businessId)
   }
 
+  const dragAllowedHandler = (
+    event: React.DragEvent<HTMLDivElement>,
+    data: RowDataModel) => {
+    if (allowDrop) {
+      allowDrop(event, data, editMode)
+    }
+  }
+
+  const dragStartAllowedHandler = (
+    event: React.DragEvent<HTMLDivElement>,
+    data: RowDataModel) => {
+    if (dragStartHandler && !editMode) {
+      dragStartHandler(event, data)
+      return
+    }
+    event.preventDefault()
+  }
+
 
   return (
     <div
       draggable={draggable}
       onDragStart={
-        dragStartHandler ? (event) => dragStartHandler(event, row) : undefined
+        dragStartHandler ? (event) => dragStartAllowedHandler(event, row) : undefined
       }
       onDrop={dropHandler ? (event) => dropHandler(event, row) : undefined}
-      onDragOver={allowDrop ? (event) => allowDrop(event, row) : undefined}
+      onDragOver={allowDrop ? (event) => dragAllowedHandler(event, row) : undefined}
       className="row-container"
     >
       <RowHeader row={row} />
-      <Columns rowIndex={rowIndex} row={row} sortColumn={sortColumn} />
+      <Columns rowIndex={rowIndex} row={row} sortColumn={sortColumn} rowEdit={editMode} isInEditMode={isInEditMode} />
       <div className="column-command">
         {!row.isHeader && editAction && deleteAction ?
           <ColumnCommands editAction={() => editHandler()} deleteAction={() => deleteHandler()} />
