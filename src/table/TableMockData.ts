@@ -1,4 +1,6 @@
-import { DataAdapter, dataFromApi } from './adapter/columns/ColumnDataAdapter'
+
+import { dataFromApi } from '../api/data'
+import { DataAdapter } from './adapter/columns/ColumnDataAdapter'
 
 const dataTable = DataAdapter(dataFromApi)
 
