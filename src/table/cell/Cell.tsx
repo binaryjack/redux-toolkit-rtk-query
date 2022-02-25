@@ -3,12 +3,13 @@ import { ColumnDataModel } from '../../model/tableModel';
 import './Cell.scss';
 
 export type CellsProps = {
+  id?: string
   column: ColumnDataModel;
   edit: boolean;
   update?: (column: ColumnDataModel, newValue?: any) => void;
 };
 
-const Cell: FC<CellsProps> = ({ column, update, edit }) => {
+const Cell: FC<CellsProps> = ({ id, column, update, edit }): JSX.Element => {
 
   const [updatedValue, setUpdatedValue] = useState<any | undefined>(undefined)
 
@@ -18,10 +19,10 @@ const Cell: FC<CellsProps> = ({ column, update, edit }) => {
   };
 
   return (
-    <div className="cell-container">
+    <div id={"id"} className="cell-container">
       {edit && column.editable && column.cell ?
         <>
-          <input className='cell-value-edit' defaultValue={column.value} onChange={(e) => updateHandler(e.currentTarget.value)} />
+          <input data-testid={`${id}-test-edit`} className='cell-value-edit' defaultValue={column.value} onChange={(e) => updateHandler(e.currentTarget.value)} />
           {column.cell.errors &&
             <div className='cell-validation-errors'>
               <ul>
@@ -32,7 +33,7 @@ const Cell: FC<CellsProps> = ({ column, update, edit }) => {
             </div>
           }
         </> :
-        <div className='cell-value'>{column.value}</div>
+        <div data-testid={`${id}-test`} className='cell-value'>{column.value}</div>
       }
     </div>
   );
