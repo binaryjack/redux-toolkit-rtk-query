@@ -1,12 +1,11 @@
 .todo-ui {
   position: relative;
-  width: 500px;
+  width: 100%;
 
   font-size: 20px;
   background: rgb(153, 153, 153);
-
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-self: center;
   justify-content: center;
   flex-direction: column;

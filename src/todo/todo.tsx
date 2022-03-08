@@ -1,7 +1,9 @@
+import './todo.scss';
+
 import { useState } from 'react';
+
 import { todoApi } from '../feature/TodoApi';
 import { Todo } from '../model/todoModel';
-import './todo.scss';
 
 type ItemProps = {
   todo: Todo;
@@ -21,12 +23,12 @@ const Item: React.FC<ItemProps> = ({
         <div className="done d-flex">
           <input
             type="checkbox"
-            checked={todo.done}
+            checked={todo.completed}
             onChange={() => onChecked(todo.id)}
           />
         </div>
       </div>
-      <div className="task  d-flex">{todo.task}</div>
+      <div className="task  d-flex">{todo.title}</div>
       <div className="right-aside">
         <div className="due-date  d-flex">{todo.dueDate}</div>
         <div className="remove  d-flex">
@@ -78,16 +80,20 @@ const TodoUi: React.FC<TodoUiProps> = (): JSX.Element => {
   const [deleteTodo] = todoApi.useDeleteTodoMutation();
 
   const onAdd = () => {
-    if (!newTask || !todos) return;
+    console.log('A');
+    if (/*!newTask || */ !todos) return;
     const last = todos[todos.length - 1];
+    console.log('B');
 
     const nextId = last && last.sortOrder ? last.sortOrder + 1 : 1;
+    console.log('C');
     const newTodo = {
       sortOrder: nextId,
       id: nextId.toString(),
-      task: newTask,
+      title: newTask,
       dueDate: getNewDueDate().toLocaleDateString(),
     } as Todo;
+    console.log('newTodo');
     addTodo(newTodo);
 
     setNewTask('');
@@ -108,7 +114,7 @@ const TodoUi: React.FC<TodoUiProps> = (): JSX.Element => {
     if (!element) return;
     const newTodo = { ...element };
 
-    newTodo.done = !newTodo.done;
+    newTodo.completed = !newTodo.completed;
     console.log(newTodo);
     updateTodo(newTodo);
   };
